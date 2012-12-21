@@ -2,7 +2,9 @@ package mailgun
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/url"
+	"regexp"
 )
 
 type Email struct {
@@ -18,7 +20,19 @@ type Email struct {
 	Variables url.Values
 }
 
-func (mg Mailgun) Send(domain string, email *Email) (msgId string, err error) {
+var EMAIL_DOMAIN_RE *regexp.Regexp
+
+func init() {
+	EMAIL_DOMAIN_RE = regexp.MustCompile(`[^<>]+<?.+@([^<>]+>?)`)
+}
+
+func (mg Mailgun) Send(email *Email) (msgId string, err error) {
+	match := EMAIL_DOMAIN_RE.FindStringSubmatch(email.From)
+	if len(match) != 2 {
+		err = fmt.Errorf("invalid From address: %s", email.From)
+		return
+	}
+	domain := match[1]
 	v := url.Values{}
 	v.Set("from", email.From)
 	for _, to := range email.To {
