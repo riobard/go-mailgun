@@ -23,7 +23,7 @@ type Email struct {
 var EMAIL_DOMAIN_RE *regexp.Regexp
 
 func init() {
-	EMAIL_DOMAIN_RE = regexp.MustCompile(`[^<>]+<?.+@([^<>]+>?)`)
+	EMAIL_DOMAIN_RE = regexp.MustCompile(`[^<>]+<?.+@([^<>]+)>?`)
 }
 
 func (mg Mailgun) Send(email *Email) (msgId string, err error) {
