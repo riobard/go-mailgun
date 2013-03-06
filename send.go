@@ -7,17 +7,17 @@ import (
 	"regexp"
 )
 
-type Email struct {
-	From      string
-	To        []string
-	Cc        []string
-	Bcc       []string
-	Subject   string
-	Html      string
-	Text      string
-	Headers   url.Values
-	Options   url.Values
-	Variables url.Values
+type Mail interface {
+	From() string
+	To() []string
+	Cc() []string
+	Bcc() []string
+	Subject() string
+	Html() string
+	Text() string
+	Headers() url.Values
+	Options() url.Values
+	Variables() url.Values
 }
 
 var EMAIL_DOMAIN_RE *regexp.Regexp
@@ -26,39 +26,39 @@ func init() {
 	EMAIL_DOMAIN_RE = regexp.MustCompile(`[^<>]+<?.+@([^<>]+)>?`)
 }
 
-func (mg Mailgun) Send(email *Email) (msgId string, err error) {
-	match := EMAIL_DOMAIN_RE.FindStringSubmatch(email.From)
+func (mg Mailgun) Send(m Mail) (msgId string, err error) {
+	match := EMAIL_DOMAIN_RE.FindStringSubmatch(m.From())
 	if len(match) != 2 {
-		err = fmt.Errorf("invalid From address: %s", email.From)
+		err = fmt.Errorf("invalid From address: %s", m.From())
 		return
 	}
 	domain := match[1]
 	v := url.Values{}
-	v.Set("from", email.From)
-	for _, to := range email.To {
+	v.Set("from", m.From())
+	for _, to := range m.To() {
 		v.Add("to", to)
 	}
-	for _, cc := range email.Cc {
+	for _, cc := range m.Cc() {
 		v.Add("cc", cc)
 	}
-	for _, bcc := range email.Bcc {
+	for _, bcc := range m.Bcc() {
 		v.Add("bcc", bcc)
 	}
-	v.Set("subject", email.Subject)
-	v.Set("text", email.Text)
-	v.Set("html", email.Html)
+	v.Set("subject", m.Subject())
+	v.Set("html", m.Html())
+	v.Set("text", m.Text())
 
-	for k, ls := range email.Headers {
+	for k, ls := range m.Headers() {
 		for _, e := range ls {
 			v.Add("h:"+k, e)
 		}
 	}
-	for k, ls := range email.Options {
+	for k, ls := range m.Options() {
 		for _, e := range ls {
 			v.Add("o:"+k, e)
 		}
 	}
-	for k, ls := range email.Variables {
+	for k, ls := range m.Variables() {
 		for _, e := range ls {
 			v.Add("v:"+k, e)
 		}
