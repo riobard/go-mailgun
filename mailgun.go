@@ -23,7 +23,7 @@ func Open(key string) *Mailgun {
 }
 
 // make an api request
-func (mg Mailgun) api(method string, path string, fields url.Values) (body []byte, err error) {
+func (mg *Mailgun) api(method string, path string, fields url.Values) (body []byte, err error) {
 	var req *http.Request
 	url := fmt.Sprintf("https://%s/v%d%s", API_ENDPOINT, API_VERSION, path)
 

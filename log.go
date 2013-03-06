@@ -15,12 +15,12 @@ type Log struct {
 	MessageId string `json:"message_id"`
 }
 
-func (l Log) Time() time.Time {
+func (l *Log) Time() time.Time {
 	t, _ := time.Parse(time.RFC1123, l.CreatedAt)
 	return t
 }
 
-func (mg Mailgun) Logs(domain string, limit, skip int) (total int, res []Log, err error) {
+func (mg *Mailgun) Logs(domain string, limit, skip int) (total int, res []Log, err error) {
 	v := url.Values{}
 	v.Set("limit", strconv.Itoa(limit))
 	v.Set("skip", strconv.Itoa(skip))

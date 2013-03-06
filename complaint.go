@@ -13,12 +13,12 @@ type Complaint struct {
 	Address   string `json:"address"`
 }
 
-func (c Complaint) Time() time.Time {
+func (c *Complaint) Time() time.Time {
 	t, _ := time.Parse(time.RFC1123, c.CreatedAt)
 	return t
 }
 
-func (mg Mailgun) Complaints(domain string, limit, skip int) (total int, res []Complaint, err error) {
+func (mg *Mailgun) Complaints(domain string, limit, skip int) (total int, res []Complaint, err error) {
 	v := url.Values{}
 	v.Set("limit", strconv.Itoa(limit))
 	v.Set("skip", strconv.Itoa(skip))

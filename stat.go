@@ -15,12 +15,12 @@ type Stat struct {
 	Event     string         `json:"event"`
 }
 
-func (s Stat) Time() time.Time {
+func (s *Stat) Time() time.Time {
 	t, _ := time.Parse(time.RFC1123, s.CreatedAt)
 	return t
 }
 
-func (mg Mailgun) Stats(domain string, limit, skip int, events []string, startDate time.Time) (total int, res []Stat, err error) {
+func (mg *Mailgun) Stats(domain string, limit, skip int, events []string, startDate time.Time) (total int, res []Stat, err error) {
 	v := url.Values{}
 	v.Set("limit", strconv.Itoa(limit))
 	v.Set("skip", strconv.Itoa(skip))

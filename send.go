@@ -20,13 +20,9 @@ type Mail interface {
 	Variables() map[string]string
 }
 
-var EMAIL_DOMAIN_RE *regexp.Regexp
+var EMAIL_DOMAIN_RE = regexp.MustCompile(`[^<>]+<?.+@([^<>]+)>?`)
 
-func init() {
-	EMAIL_DOMAIN_RE = regexp.MustCompile(`[^<>]+<?.+@([^<>]+)>?`)
-}
-
-func (mg Mailgun) Send(m Mail) (msgId string, err error) {
+func (mg *Mailgun) Send(m Mail) (msgId string, err error) {
 	match := EMAIL_DOMAIN_RE.FindStringSubmatch(m.From())
 	if len(match) != 2 {
 		err = fmt.Errorf("invalid From address: %s", m.From())

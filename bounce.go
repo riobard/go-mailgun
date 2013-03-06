@@ -14,12 +14,12 @@ type Bounce struct {
 	Address   string `json:"address"`
 }
 
-func (b Bounce) Time() time.Time {
+func (b *Bounce) Time() time.Time {
 	t, _ := time.Parse(time.RFC1123, b.CreatedAt)
 	return t
 }
 
-func (mg Mailgun) Bounces(domain string, limit, skip int) (total int, res []Bounce, err error) {
+func (mg *Mailgun) Bounces(domain string, limit, skip int) (total int, res []Bounce, err error) {
 	v := url.Values{}
 	v.Set("limit", strconv.Itoa(limit))
 	v.Set("skip", strconv.Itoa(skip))
