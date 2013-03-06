@@ -15,9 +15,9 @@ type Mail interface {
 	Subject() string
 	Html() string
 	Text() string
-	Headers() url.Values
-	Options() url.Values
-	Variables() url.Values
+	Headers() map[string]string
+	Options() map[string]string
+	Variables() map[string]string
 }
 
 var EMAIL_DOMAIN_RE *regexp.Regexp
@@ -48,20 +48,14 @@ func (mg Mailgun) Send(m Mail) (msgId string, err error) {
 	v.Set("html", m.Html())
 	v.Set("text", m.Text())
 
-	for k, ls := range m.Headers() {
-		for _, e := range ls {
-			v.Add("h:"+k, e)
-		}
+	for k, e := range m.Headers() {
+		v.Add("h:"+k, e)
 	}
-	for k, ls := range m.Options() {
-		for _, e := range ls {
-			v.Add("o:"+k, e)
-		}
+	for k, e := range m.Options() {
+		v.Add("o:"+k, e)
 	}
-	for k, ls := range m.Variables() {
-		for _, e := range ls {
-			v.Add("v:"+k, e)
-		}
+	for k, e := range m.Variables() {
+		v.Add("v:"+k, e)
 	}
 
 	rsp, err := mg.api("POST", "/"+domain+"/messages", v)
