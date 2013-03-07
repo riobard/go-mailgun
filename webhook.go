@@ -55,7 +55,7 @@ func (wh *Webhook) Handle(w http.ResponseWriter, req *http.Request) (evt *Event,
 	}
 
 	ts := req.Form.Get("timestamp")
-	if wh.Verify(ts, req.Form.Get("token"), req.Form.Get("signature")) {
+	if !wh.Verify(ts, req.Form.Get("token"), req.Form.Get("signature")) {
 		err = ErrBadSignature
 		http.Error(w, "bad signature", http.StatusForbidden)
 		return
