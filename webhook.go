@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+const MAX_FORM_SIZE = 2 * 1024 * 1024
+
 type Event struct {
 	name   string
 	time   time.Time
@@ -48,7 +50,7 @@ func (wh *Webhook) Handle(w http.ResponseWriter, req *http.Request) (evt *Event,
 		return
 	}
 
-	if err = req.ParseForm(); err != nil {
+	if err = req.ParseMultipartForm(MAX_FORM_SIZE); err != nil {
 		err = ErrInvalidForm
 		http.Error(w, "invalid form", http.StatusBadRequest)
 		return
