@@ -13,17 +13,17 @@ const (
 	API_ENDPOINT = "api.mailgun.net"
 )
 
-type Mailgun struct {
+type Client struct {
 	httpClient *http.Client
 	key        string
 }
 
-func Open(key string) *Mailgun {
-	return &Mailgun{httpClient: &http.Client{}, key: key}
+func New(key string) *Client {
+	return &Client{httpClient: &http.Client{}, key: key}
 }
 
 // make an api request
-func (mg *Mailgun) api(method string, path string, fields url.Values) (body []byte, err error) {
+func (c *Client) api(method string, path string, fields url.Values) (body []byte, err error) {
 	var req *http.Request
 	url := fmt.Sprintf("https://%s/v%d%s", API_ENDPOINT, API_VERSION, path)
 
@@ -40,8 +40,8 @@ func (mg *Mailgun) api(method string, path string, fields url.Values) (body []by
 	if err != nil {
 		return
 	}
-	req.SetBasicAuth("api", mg.key)
-	rsp, err := mg.httpClient.Do(req)
+	req.SetBasicAuth("api", c.key)
+	rsp, err := c.httpClient.Do(req)
 	if err != nil {
 		return
 	}

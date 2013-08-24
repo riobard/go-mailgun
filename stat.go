@@ -20,7 +20,7 @@ func (s *Stat) Time() time.Time {
 	return t
 }
 
-func (mg *Mailgun) Stats(domain string, limit, skip int, events []string, startDate time.Time) (total int, res []Stat, err error) {
+func (c *Client) Stats(domain string, limit, skip int, events []string, startDate time.Time) (total int, res []Stat, err error) {
 	v := url.Values{}
 	v.Set("limit", strconv.Itoa(limit))
 	v.Set("skip", strconv.Itoa(skip))
@@ -31,7 +31,7 @@ func (mg *Mailgun) Stats(domain string, limit, skip int, events []string, startD
 	if !startDate.IsZero() {
 		v.Set("start-date", startDate.Format("2006-01-02")) // ISO 8601 date format
 	}
-	body, err := mg.api("GET", "/"+domain+"/stats", v)
+	body, err := c.api("GET", "/"+domain+"/stats", v)
 	if err != nil {
 		return
 	}

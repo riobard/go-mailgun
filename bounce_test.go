@@ -5,7 +5,7 @@ import (
 )
 
 func TestBounce(t *testing.T) {
-	n, res, err := mg.Bounces(*domain, 10, 0)
+	n, res, err := c.Bounces(*domain, 10, 0)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -20,11 +20,11 @@ func (l *Log) Time() time.Time {
 	return t
 }
 
-func (mg *Mailgun) Logs(domain string, limit, skip int) (total int, res []Log, err error) {
+func (c *Client) Logs(domain string, limit, skip int) (total int, res []Log, err error) {
 	v := url.Values{}
 	v.Set("limit", strconv.Itoa(limit))
 	v.Set("skip", strconv.Itoa(skip))
-	body, err := mg.api("GET", "/"+domain+"/log", v)
+	body, err := c.api("GET", "/"+domain+"/log", v)
 	if err != nil {
 		return
 	}

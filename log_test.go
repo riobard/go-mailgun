@@ -5,7 +5,7 @@ import (
 )
 
 func TestLog(t *testing.T) {
-	n, res, err := mg.Logs(*domain, 10, 0)
+	n, res, err := c.Logs(*domain, 10, 0)
 	if err != nil {
 		t.Fatal(err)
 	}

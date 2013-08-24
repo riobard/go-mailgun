@@ -11,7 +11,7 @@ func UTCDate(year, month, day int) time.Time {
 }
 
 func TestStat(t *testing.T) {
-	n, res, err := mg.Stats(*domain, 10, 0, nil, UTCDate(1, 1, 1))
+	n, res, err := c.Stats(*domain, 10, 0, nil, UTCDate(1, 1, 1))
 	if err != nil {
 		t.Fatal(err)
 	}

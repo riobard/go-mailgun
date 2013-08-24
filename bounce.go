@@ -19,11 +19,11 @@ func (b *Bounce) Time() time.Time {
 	return t
 }
 
-func (mg *Mailgun) Bounces(domain string, limit, skip int) (total int, res []Bounce, err error) {
+func (c *Client) Bounces(domain string, limit, skip int) (total int, res []Bounce, err error) {
 	v := url.Values{}
 	v.Set("limit", strconv.Itoa(limit))
 	v.Set("skip", strconv.Itoa(skip))
-	body, err := mg.api("GET", "/"+domain+"/bounces", v)
+	body, err := c.api("GET", "/"+domain+"/bounces", v)
 	if err != nil {
 		return
 	}

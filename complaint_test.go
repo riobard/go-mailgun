@@ -5,7 +5,7 @@ import (
 )
 
 func TestComplaint(t *testing.T) {
-	n, res, err := mg.Complaints(*domain, 10, 0)
+	n, res, err := c.Complaints(*domain, 10, 0)
 	if err != nil {
 		t.Fatal(err)
 	}

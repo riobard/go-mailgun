@@ -35,7 +35,7 @@ func TestSend(t *testing.T) {
 		subject: "test mail",
 		text:    "this is a test mail",
 	}
-	id, err := mg.Send(m)
+	id, err := c.Send(m)
 	if err != nil {
 		t.Fatal(err)
 	}

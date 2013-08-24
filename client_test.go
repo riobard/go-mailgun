@@ -9,10 +9,10 @@ var (
 	domain = flag.String("domain", "", "Test domain")
 	from   = flag.String("from", "", "Test mail sender address")
 	to     = flag.String("to", "", "Test mail recipient address")
-	mg     *Mailgun
+	c      *Client
 )
 
 func init() {
 	flag.Parse()
-	mg = Open(*key)
+	c = New(*key)
 }

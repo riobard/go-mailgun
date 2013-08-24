@@ -22,7 +22,7 @@ type Mail interface {
 
 var EMAIL_DOMAIN_RE = regexp.MustCompile(`[^<>]+<?.+@([^<>]+)>?`)
 
-func (mg *Mailgun) Send(m Mail) (msgId string, err error) {
+func (c *Client) Send(m Mail) (msgId string, err error) {
 	match := EMAIL_DOMAIN_RE.FindStringSubmatch(m.From())
 	if len(match) != 2 {
 		err = fmt.Errorf("invalid From address: %s", m.From())
@@ -54,7 +54,7 @@ func (mg *Mailgun) Send(m Mail) (msgId string, err error) {
 		v.Add("v:"+k, e)
 	}
 
-	rsp, err := mg.api("POST", "/"+domain+"/messages", v)
+	rsp, err := c.api("POST", "/"+domain+"/messages", v)
 	if err != nil {
 		return
 	}
