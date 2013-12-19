@@ -1,6 +1,7 @@
 package mailgun
 
 import (
+	"reflect"
 	"testing"
 	"time"
 )
@@ -18,5 +19,17 @@ func TestStat(t *testing.T) {
 	t.Logf("total stats: %d", n)
 	for _, r := range res {
 		t.Logf("%+v", r)
+	}
+}
+
+func TestStatTime(t *testing.T) {
+	s := Stat{
+		Count:     2,
+		CreatedAt: "Tue, 15 Nov 2011 08:25:11 GMT",
+		Tags:      map[string]int{"nice": 1},
+		Event:     "sent",
+	}
+	if reflect.TypeOf(s.Time()) != reflect.TypeOf(time.Now()) {
+		t.Fatalf("Should retrun a Time %+v", s.Time())
 	}
 }
