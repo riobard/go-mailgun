@@ -5,18 +5,11 @@ import (
 	"testing"
 )
 
-/*
-	key    = flag.String("key", "", "key-3kp1667q2vkpubc51c30ifhzv3ypai08")
-	domain = flag.String("domain", "", "mbm.mailgun.org")
-	from   = flag.String("from", "", "julien.dasilva+mailgunsender@gmail.com")
-	to     = flag.String("to", "", "julien.dasilva+mailgunreceiver@gmail.com")
-*/
-
 var (
-	key    = flag.String("key", "key-3kp1667q2vkpubc51c30ifhzv3ypai08", "Mailgun key")
-	domain = flag.String("domain", "mbm.mailgun.org", "Test domain")
-	from   = flag.String("from", "postmaster@mbm.mailgun.org", "Test mail sender address")
-	to     = flag.String("to", "postmaster@mbm.mailgun.org", "Test mail recipient address")
+	key    = flag.String("key", "<your key>", "Mailgun key")
+	domain = flag.String("domain", "<your domain>", "Test domain")
+	from   = flag.String("from", "postmaster@mailgun.org", "Test mail sender address")
+	to     = flag.String("to", "postmaster@mailgun.org", "Test mail recipient address")
 	c      *Client
 )
 
@@ -30,8 +23,8 @@ func TestWrongResponse(t *testing.T) {
 	m := &mail{
 		from:      *from,
 		to:        []string{*to},
-		cc:        []string{"postmaster@mbm.mailgun.org"},
-		bcc:       []string{"postmaster@mbm.mailgun.org"},
+		cc:        []string{"postmaster@mailgun.org"},
+		bcc:       []string{"postmaster@mailgun.org"},
 		options:   map[string]string{"tag": "awesome"},
 		headers:   map[string]string{"julien": "is_awesome"},
 		variables: map[string]string{"name": "julien", "twitter": "juliendsv"},
