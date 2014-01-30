@@ -7,15 +7,15 @@ import (
 )
 
 type Route struct {
-    Id string           `json:"id"`
-    Priority int        `json:"priority"`
-    Description string  `json:"description"`
-	Expression string   `json:"expression"`
-	Actions []string    `json:"actions"`
+	Id          string   `json:"id"`
+	Priority    int      `json:"priority"`
+	Description string   `json:"description"`
+	Expression  string   `json:"expression"`
+	Actions     []string `json:"actions"`
 }
 
-func (mg *Mailgun) Routes(limit, skip int) (total int, res []Route, err error) {
-    v := url.Values{}
+func (mg *Client) Routes(limit, skip int) (total int, res []Route, err error) {
+	v := url.Values{}
 	v.Set("limit", strconv.Itoa(limit))
 	v.Set("skip", strconv.Itoa(skip))
 	body, err := mg.api("GET", "/routes", v)
@@ -37,14 +37,14 @@ func (mg *Mailgun) Routes(limit, skip int) (total int, res []Route, err error) {
 
 }
 
-func (mg *Mailgun) Get(routeId string) (r Route, err error) {
-    rsp, err := mg.api("GET", "/routes/"+routeId, nil)
-    if err != nil {
+func (mg *Client) Get(routeId string) (r Route, err error) {
+	rsp, err := mg.api("GET", "/routes/"+routeId, nil)
+	if err != nil {
 		return
 	}
 	var res struct {
 		Message string `json:"message"`
-	    R	    Route `json:"route"`
+		R       Route  `json:"route"`
 	}
 	err = json.Unmarshal(rsp, &res)
 	r = res.R
@@ -52,48 +52,48 @@ func (mg *Mailgun) Get(routeId string) (r Route, err error) {
 	return
 }
 
-func (mg *Mailgun) Create(r *Route) (routeId string, err error) {
+func (mg *Client) Create(r *Route) (routeId string, err error) {
 	v := url.Values{}
-	
-    v.Set("priority", strconv.Itoa(r.Priority))
-    v.Set("description", r.Description)
-    v.Set("expression", r.Expression)
-	
-    for _, a := range r.Actions {
+
+	v.Set("priority", strconv.Itoa(r.Priority))
+	v.Set("description", r.Description)
+	v.Set("expression", r.Expression)
+
+	for _, a := range r.Actions {
 		v.Add("action", a)
 	}
 
-    rsp, err := mg.api("POST", "/routes", v)
-    if err != nil {
+	rsp, err := mg.api("POST", "/routes", v)
+	if err != nil {
 		return
 	}
 	var res struct {
 		Message string `json:"message"`
-	    R	    Route `json:"route"`
+		R       Route  `json:"route"`
 	}
 	err = json.Unmarshal(rsp, &res)
 	routeId = res.R.Id
 	return
 }
 
-func (mg *Mailgun) Update(r *Route) (routeId string, err error) {
+func (mg *Client) Update(r *Route) (routeId string, err error) {
 	v := url.Values{}
-	
-    v.Set("priority", strconv.Itoa(r.Priority))
-    v.Set("description", r.Description)
-    v.Set("expression", r.Expression)
-	
-    for _, a := range r.Actions {
+
+	v.Set("priority", strconv.Itoa(r.Priority))
+	v.Set("description", r.Description)
+	v.Set("expression", r.Expression)
+
+	for _, a := range r.Actions {
 		v.Add("action", a)
 	}
 
-    rsp, err := mg.api("PUT", "/routes/"+r.Id, v)
-    if err != nil {
+	rsp, err := mg.api("PUT", "/routes/"+r.Id, v)
+	if err != nil {
 		return
 	}
 	var res struct {
 		Message string `json:"message"`
-	    R	    Route `json:"route"`
+		R       Route  `json:"route"`
 	}
 	err = json.Unmarshal(rsp, &res)
 	routeId = res.R.Id
@@ -101,9 +101,9 @@ func (mg *Mailgun) Update(r *Route) (routeId string, err error) {
 	return
 }
 
-func (mg *Mailgun) Delete(r *Route) (err error) {
-    rsp, err := mg.api("DELETE", "/routes/"+r.Id, nil)
-    if err != nil {
+func (mg *Client) Delete(r *Route) (err error) {
+	rsp, err := mg.api("DELETE", "/routes/"+r.Id, nil)
+	if err != nil {
 		return
 	}
 	var res struct {

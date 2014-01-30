@@ -5,7 +5,7 @@ import (
 )
 
 func TestRoute(t *testing.T) {
-	n, res, err := mg.Routes(10, 0)
+	n, res, err := c.Routes(10, 0)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -14,20 +14,20 @@ func TestRoute(t *testing.T) {
 		t.Logf("%+v", r)
 	}
 
-    r := &Route{
-        Priority: 0,
-        Description: "test",
-        Expression: "match_recipient('.*@gmail.com')",
-		Actions: []string{ "forward(\"alex@mailgun.net\")", },
+	r := &Route{
+		Priority:    0,
+		Description: "test",
+		Expression:  "match_recipient('.*@gmail.com')",
+		Actions:     []string{"forward(\"alex@mailgun.net\")"},
 	}
 
-    r.Id, err = mg.Create(r) 
+	r.Id, err = c.Create(r)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-    err = mg.Delete(r)
-    if err != nil {
+	err = c.Delete(r)
+	if err != nil {
 		t.Fatal(err)
 	}
 }
