@@ -1,3 +1,6 @@
+/*
+Mailgun client in Go.
+*/
 package mailgun
 
 import (
