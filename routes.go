@@ -14,11 +14,11 @@ type Route struct {
 	Actions     []string `json:"actions"`
 }
 
-func (mg *Client) Routes(limit, skip int) (total int, res []Route, err error) {
+func (c *Client) Routes(limit, skip int) (total int, res []Route, err error) {
 	v := url.Values{}
 	v.Set("limit", strconv.Itoa(limit))
 	v.Set("skip", strconv.Itoa(skip))
-	body, err := mg.api("GET", "/routes", v)
+	body, err := c.api("GET", "/routes", v)
 	if err != nil {
 		return
 	}
@@ -37,8 +37,8 @@ func (mg *Client) Routes(limit, skip int) (total int, res []Route, err error) {
 
 }
 
-func (mg *Client) Get(routeId string) (r Route, err error) {
-	rsp, err := mg.api("GET", "/routes/"+routeId, nil)
+func (c *Client) Get(routeId string) (r Route, err error) {
+	rsp, err := c.api("GET", "/routes/"+routeId, nil)
 	if err != nil {
 		return
 	}
@@ -52,7 +52,7 @@ func (mg *Client) Get(routeId string) (r Route, err error) {
 	return
 }
 
-func (mg *Client) Create(r *Route) (routeId string, err error) {
+func (c *Client) Create(r *Route) (routeId string, err error) {
 	v := url.Values{}
 
 	v.Set("priority", strconv.Itoa(r.Priority))
@@ -63,7 +63,7 @@ func (mg *Client) Create(r *Route) (routeId string, err error) {
 		v.Add("action", a)
 	}
 
-	rsp, err := mg.api("POST", "/routes", v)
+	rsp, err := c.api("POST", "/routes", v)
 	if err != nil {
 		return
 	}
@@ -76,7 +76,7 @@ func (mg *Client) Create(r *Route) (routeId string, err error) {
 	return
 }
 
-func (mg *Client) Update(r *Route) (routeId string, err error) {
+func (c *Client) Update(r *Route) (routeId string, err error) {
 	v := url.Values{}
 
 	v.Set("priority", strconv.Itoa(r.Priority))
@@ -87,7 +87,7 @@ func (mg *Client) Update(r *Route) (routeId string, err error) {
 		v.Add("action", a)
 	}
 
-	rsp, err := mg.api("PUT", "/routes/"+r.Id, v)
+	rsp, err := c.api("PUT", "/routes/"+r.Id, v)
 	if err != nil {
 		return
 	}
@@ -101,8 +101,8 @@ func (mg *Client) Update(r *Route) (routeId string, err error) {
 	return
 }
 
-func (mg *Client) Delete(r *Route) (err error) {
-	rsp, err := mg.api("DELETE", "/routes/"+r.Id, nil)
+func (c *Client) Delete(r *Route) (err error) {
+	rsp, err := c.api("DELETE", "/routes/"+r.Id, nil)
 	if err != nil {
 		return
 	}
